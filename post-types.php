@@ -1,8 +1,8 @@
 <?php
 
-add_action( 'init', 'pdev_book_collection_Book_types' );
+add_action( 'init', 'pdev_book_collection_post_types' );
 
-function pdev_book_collection_Book_types() {
+function pdev_book_collection_post_types() {
 	register_post_type( 'book', [
         'public'                => true,
         'publicly_queryable'    => true,
@@ -17,6 +17,10 @@ function pdev_book_collection_Book_types() {
         'has_archive'           => 'books',
         'qeury_var'             => 'book',
         'map_meta_cap'          => true,
+        //'capabilities_type'     => 'book',
+        'taxonomies'            => [
+            'post_tag'
+        ],
 
         // The rewrite handles the URL structure.
         'rewrite' => [
@@ -65,7 +69,29 @@ function pdev_book_collection_Book_types() {
 			'item_reverted_to_draft'   => 'Book reverted to draft.',
 			'item_scheduled'           => 'Book scheduled.',
 			'item_updated'             => 'Book updated.'
-        ]
- 
+        ], 
+  
+/*        
+        'capabilities' => [
+            'edit_post'                 => 'edit_book',
+            'read_post'                 => 'read_book',
+            'delete_post'               => 'delete_book',
+            'create_post'               => 'create_books',
+            'edit_posts'                => 'edit_books',
+            'edit_others_posts'         => 'edit_others_books',
+            'edit_private_posts'        => 'edit_private_books',
+            'edit_published_posts'      => 'edit_published_books',
+            'publish_posts'             => 'publish_books',
+            'read_private_posts'        => 'read_private_books',
+            'read'                      => 'read',
+            'delete_posts'              => 'delete_books',
+            'delete_others_posts'       => 'delete_others_books',
+            'delete_private_posts'      => 'delete_private_books',
+            'delete_published_posts'    => 'delete_published_books',
+        ],
+  */      
 	] );
+/*
+
+*/
 }
