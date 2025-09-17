@@ -33,5 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 // Load custom post type functions
 require_once plugin_dir_path( __FILE__ ) . 'post-types.php';
 require_once plugin_dir_path( __FILE__ ) . 'post-meta.php';
+require_once plugin_dir_path( __FILE__ ) . 'meta-boxes.php';
+require_once plugin_dir_path( __FILE__ ) . 'taxonomies.php';
 
 ?>
