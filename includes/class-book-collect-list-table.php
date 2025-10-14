@@ -3,7 +3,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( trailingslashit( dirname( __FILE__ ) ) . 'class-wp-list-table-copy.php' );
 }
 
-class WP_Logger_List_Table extends WP_List_Table {
+class Book_Collect_List_Table extends WP_List_Table {
 
 	function __construct( $items ) {
 		$this->items       = isset( $items['entries'] ) ? $items['entries'] : array();

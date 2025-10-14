@@ -140,20 +140,35 @@ class book_collect_Admin {
 
 	}
 
+	public function generate_menu_page() {
+		$book_collect_sample_text = '';
+		require_once( trailingslashit( dirname( __FILE__ ) ) . '../includes/class-book-collect-list-table.php' );
+
+		// $plugin_select = isset( $_POST['plugin-select'] ) ? $_POST['plugin-select'] : false;
+		// $log_id        = isset( $_POST['log-select'] ) ? $_POST['log-select'] : false;
+		// $session_id    = isset( $_POST['session-select'] ) ? $_POST['session-select'] : false;
+		// $search        = isset( $_POST['search'] ) ? $_POST['search'] : '';
+		// $hide_form     = isset( $_COOKIE['wp_logger_hide_form'] ) ? 'hide-form' : '';
+
+		//$logger_table  = new Book_Collect_List_Table( $this->get_entries() );
+		//$logger_table->prepare_items();
+		require_once( trailingslashit( dirname( __FILE__ ) ) . 'partials/book-collect-admin-display.php' );
+		//$this->admin_menu_setting_check();
+	}
 	
 
     function bocol_book_register_meta_boxes() {
         add_meta_box( 
             'pdev-book-details',
             'Book Details',
-            array(&$this, 'bocol_'),
+            array(&$this, 'bocol_book_details_meta_boxes'),
             'book',
             'advanced',
             'high'
         );
     }
 
-    function bocol_( $post ) {
+    function bocol_book_details_meta_boxes( $post ) {
         $author = get_post_meta( $post->ID, 'book_author',  true);
 
         wp_nonce_field( basename( __FILE__ ), 'pdev-book-details' ); ?>

@@ -6,14 +6,14 @@
         add_meta_box( 
             'pdev-book-details',
             'Book Details',
-            'bocol_',
+            'bocol_book_details_meta_boxes',
             'book',
             'advanced',
             'high'
         );
     }
 
-    function bocol_( $post ) {
+    function bocol_book_details_meta_boxes( $post ) {
         $author = get_post_meta( $post->ID, 'book_author',  true);
 
         wp_nonce_field( basename( __FILE__ ), 'pdev-book-details' ); ?>
