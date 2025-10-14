@@ -1,8 +1,8 @@
 <?php
 
-add_action( 'init', 'pdev_Genres_register_taxonomies' );
+add_action( 'init', 'bocol_Genres_register_taxonomies' );
 
-function pdev_Genres_register_taxonomies() {
+function bocol_Genres_register_taxonomies() {
 	register_taxonomy( 'genre', 'book', [
 
         // Taxonomy auguments

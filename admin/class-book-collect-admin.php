@@ -51,12 +51,12 @@ class book_collect_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		add_action( 'init'					, array($this, 'pdev_book_collection_post_types') );
-		add_action( 'init'					, array($this, 'pdev_books_register_meta') );
+		add_action( 'init'					, array($this, 'bocol_book_collection_post_types') );
+		add_action( 'init'					, array($this, 'bocol_books_register_meta') );
 		add_action( 'admin_menu'			, array($this, 'admin_menu') );
-		add_action( 'add_meta_boxes_book'	, array($this, 'pdev_book_register_meta_boxes') );
-		add_action( 'save_post_book'		, array($this, 'pdev_book_save_post'), 10, 2);
-		add_action( 'init'					, array($this, 'pdev_Genres_register_taxonomies') );
+		add_action( 'add_meta_boxes_book'	, array($this, 'bocol_book_register_meta_boxes') );
+		add_action( 'save_post_book'		, array($this, 'bocol_book_save_post'), 10, 2);
+		add_action( 'init'					, array($this, 'bocol_Genres_register_taxonomies') );
 
 	}
 
@@ -129,18 +129,18 @@ class book_collect_Admin {
 
 	
 
-    function pdev_book_register_meta_boxes() {
+    function bocol_book_register_meta_boxes() {
         add_meta_box( 
             'pdev-book-details',
             'Book Details',
-            array(&$this, 'pdev_book_details_meta_boxes'),
+            array(&$this, 'bocol_'),
             'book',
             'advanced',
             'high'
         );
     }
 
-    function pdev_book_details_meta_boxes( $post ) {
+    function bocol_( $post ) {
         $author = get_post_meta( $post->ID, 'book_author',  true);
 
         wp_nonce_field( basename( __FILE__ ), 'pdev-book-details' ); ?>
@@ -158,7 +158,7 @@ class book_collect_Admin {
 
     
 
-    function pdev_book_save_post( $post_id, $post ) {
+    function bocol_book_save_post( $post_id, $post ) {
         
         // Verify the nonce before proceeding
         if (
@@ -204,7 +204,7 @@ class book_collect_Admin {
 
 	
 
-	function pdev_book_collection_post_types() {
+	function bocol_book_collection_post_types() {
 		register_post_type( 'book', [
 			'public'                => true,
 			'publicly_queryable'    => true,
@@ -297,7 +297,7 @@ class book_collect_Admin {
 
 	
 
-    function pdev_books_register_meta() {
+    function bocol_books_register_meta() {
         register_post_meta( 'book', 'book_author', [
             'single'               => true,
             'show_in_rest'         => true,
@@ -308,7 +308,7 @@ class book_collect_Admin {
     }
 
 
-	function pdev_Genres_register_taxonomies() {
+	function bocol_Genres_register_taxonomies() {
 		register_taxonomy( 'genre', 'book', [
 
 			// Taxonomy auguments

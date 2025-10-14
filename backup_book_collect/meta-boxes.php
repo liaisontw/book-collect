@@ -1,19 +1,19 @@
 <?php
 
-    add_action( 'add_meta_boxes_book', 'pdev_book_register_meta_boxes');
+    add_action( 'add_meta_boxes_book', 'bocol_book_register_meta_boxes');
 
-    function pdev_book_register_meta_boxes() {
+    function bocol_book_register_meta_boxes() {
         add_meta_box( 
             'pdev-book-details',
             'Book Details',
-            'pdev_book_details_meta_boxes',
+            'bocol_',
             'book',
             'advanced',
             'high'
         );
     }
 
-    function pdev_book_details_meta_boxes( $post ) {
+    function bocol_( $post ) {
         $author = get_post_meta( $post->ID, 'book_author',  true);
 
         wp_nonce_field( basename( __FILE__ ), 'pdev-book-details' ); ?>
@@ -29,9 +29,9 @@
         </p>
     <?php }
 
-    add_action( 'save_post_book', 'pdev_book_save_post', 10, 2);
+    add_action( 'save_post_book', 'bocol_book_save_post', 10, 2);
 
-    function pdev_book_save_post( $post_id, $post ) {
+    function bocol_book_save_post( $post_id, $post ) {
         
         // Verify the nonce before proceeding
         if (

@@ -1,8 +1,8 @@
 <?php
 
-    add_action( 'init', 'pdev_books_register_meta');
+    add_action( 'init', 'bocol_books_register_meta');
 
-    function pdev_books_register_meta() {
+    function bocol_books_register_meta() {
         register_post_meta( 'book', 'book_author', [
             'single'               => true,
             'show_in_rest'         => true,

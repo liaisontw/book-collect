@@ -1,8 +1,8 @@
 <?php
 
-add_action( 'init', 'pdev_book_collection_post_types' );
+add_action( 'init', 'bocol_book_collection_post_types' );
 
-function pdev_book_collection_post_types() {
+function bocol_book_collection_post_types() {
 	register_post_type( 'book', [
         'public'                => true,
         'publicly_queryable'    => true,
