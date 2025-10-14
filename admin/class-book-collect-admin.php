@@ -53,10 +53,13 @@ class book_collect_Admin {
 		$this->version = $version;
 		add_action( 'init'					, array($this, 'bocol_book_collection_post_types') );
 		add_action( 'init'					, array($this, 'bocol_books_register_meta') );
+		add_action( 'init'					, array($this, 'bocol_Genres_register_taxonomies') );
+
 		add_action( 'admin_menu'			, array($this, 'admin_menu') );
+		
 		add_action( 'add_meta_boxes_book'	, array($this, 'bocol_book_register_meta_boxes') );
 		add_action( 'save_post_book'		, array($this, 'bocol_book_save_post'), 10, 2);
-		add_action( 'init'					, array($this, 'bocol_Genres_register_taxonomies') );
+		
 
 	}
 
@@ -114,11 +117,21 @@ class book_collect_Admin {
      */
 
 	public function admin_menu() {
-		add_options_page( 'template Stuff Options', 
-						  'template Stuff', 
+		add_options_page( 'Book Collect Options', 
+						  'Book Collect', 
 						  'manage_options', 
 						  'book_collect_options', 
 						  array(&$this, 'book_collect_menu_options')				  
+		);
+
+		add_menu_page(
+			esc_html__( 'Bocol Logger', 'book-collect' ),
+			esc_html__( 'Bocol Logger', 'book-collect' ),
+			'update_core',
+			'book_collect_log_list',
+			array( $this, 'book_collect_menu_options' ),
+			'dashicons-editor-help',
+			100
 		);
 	}
 
