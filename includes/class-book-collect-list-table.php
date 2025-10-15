@@ -11,8 +11,8 @@ class Book_Collect_List_Table extends WP_List_Table {
 
 		parent::__construct(
 			array(
-				'singular'  => esc_html__( 'log', 'log-catcher' ),
-				'plural'    => esc_html__( 'logs', 'log-catcher' ),
+				'singular'  => esc_html__( 'book', 'book-collect' ),
+				'plural'    => esc_html__( 'books', 'book-collect' ),
 				'ajax'      => false
 			)
 		);
@@ -43,10 +43,10 @@ class Book_Collect_List_Table extends WP_List_Table {
 
 	public function get_columns() {
 		$columns = array(
-			'log_msg'      => esc_html__( 'Log Message', 'log-catcher' ),
-			'log_severity' => esc_html__( 'Severity', 'log-catcher' ),
-			'log_plugin'   => esc_html__( 'Plugin', 'log-catcher' ),
-			'log_date'     => esc_html__( 'Date', 'log-catcher' ),
+			'book_name'        => esc_html__( 'Book Name', 'book-collect' ),
+			'book_description' => esc_html__( 'Description', 'book-collect' ),
+			'book_genre'       => esc_html__( 'Genre', 'book-collect' ),
+			'book_date'        => esc_html__( 'Date', 'book-collect' ),
 		);
 		return $columns;
 	}
@@ -57,9 +57,10 @@ class Book_Collect_List_Table extends WP_List_Table {
 
 	public function get_sortable_columns() {
 		return array(
-			'log_severity' => array( 'log_severity', false ),
-			'log_plugin'   => array( 'log_plugin', false ),
-			'log_date'     => array( 'log_date', false ),
+			'book_name'        => array( 'book_name', false ),
+			'book_description' => array( 'book_description', false ),
+			'book_genre'       => array( 'book_genre', false ),
+			'book_date'        => array( 'book_date', false ),
 		);
 	}
 
@@ -69,10 +70,10 @@ class Book_Collect_List_Table extends WP_List_Table {
 			foreach ( $this->items as $item ) {
 				$data[] = array(
 					'id'           => isset( $item->the_ID ) ? $item->the_ID : '',
-					'log_severity' => isset( $item->severity ) ? $item->severity : '',
-					'log_msg'      => isset( $item->message ) ? $item->message : '',
-					'log_date'     => isset( $item->the_date ) ? $item->the_date : '',
-					'log_plugin'   => isset( $item->log_plugin ) ? $item->log_plugin : '',
+					'book_description' => isset( $item->book_description ) ? $item->book_description : '',
+					'book_name'      => isset( $item->book_name ) ? $item->book_name : '',
+					'book_date'     => isset( $item->book_date ) ? $item->book_date : '',
+					'book_genre'   => isset( $item->book_genre ) ? $item->book_genre : '',
 					'session'      => isset( $item->session ) ? $item->session : 0
 				);
 			}
@@ -80,31 +81,30 @@ class Book_Collect_List_Table extends WP_List_Table {
 		return $data;
 	}
 
-
 	public function column_id( $item ) {
 		return esc_html( $item['id'] );
 	}
 
-	public function column_log_msg( $item ) {
+	public function column_book_name( $item ) {
 		if ( 1 == $item['session'] ) {
-			$session_url = esc_url( admin_url( 'admin.php?page=logger_catcher_log_list&session-select=' . intval( $item['id'] ) ) );
-			$message = "<a href='{$session_url}' class='thickbox'>" . esc_html( $item['log_msg'] ) . "</a>";
+			$session_url = esc_url( admin_url( 'admin.php?page=book_collect_book_list&session-select=' . intval( $item['id'] ) ) );
+			$message = "<a href='{$session_url}' class='thickbox'>" . esc_html( $item['book_name'] ) . "</a>";
 		} else {
-			$message = esc_html( $item['log_msg'] );
+			$message = esc_html( $item['book_name'] );
 		}
 		return $message;
 	}
 
-	public function column_log_date( $item ) {
-		return esc_html( $item['log_date'] );
+	public function column_book_date( $item ) {
+		return esc_html( $item['book_date'] );
 	}
 
-	public function column_log_plugin( $item ) {
-		return esc_html( $item['log_plugin'] );
+	public function column_book_genre( $item ) {
+		return esc_html( $item['book_genre'] );
 	}
 
-	public function column_log_severity( $item ) {
-		return esc_html( $item['log_severity'] );
+	public function column_book_description( $item ) {
+		return esc_html( $item['book_description'] );
 	}
 
 }

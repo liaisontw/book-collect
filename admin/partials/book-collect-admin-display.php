@@ -133,7 +133,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 
 		<?php
-			//$logger_table->display();
+			$logger_table->display();
 		?>
 	</form>
 	
