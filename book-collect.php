@@ -36,6 +36,8 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'BOOK_COLLECT_VERSION', '1.0.0' );
+define( 'BOOK_COLLECT_TAXONOMY', 'genres' );
+define( 'BOOK_COLLECT_CPT', 'book-collect' );
 
 /**
  * The code that runs during plugin activation.

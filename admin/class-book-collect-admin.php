@@ -39,6 +39,8 @@ class book_collect_Admin {
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
+	const TAXONOMY = BOOK_COLLECT_TAXONOMY;
+	const CPT      = BOOK_COLLECT_CPT;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -51,9 +53,11 @@ class book_collect_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		add_action( 'init'					, array($this, 'bocol_book_collection_post_types') );
-		add_action( 'init'					, array($this, 'bocol_books_register_meta') );
-		add_action( 'init'					, array($this, 'bocol_Genres_register_taxonomies') );
+		require_once( trailingslashit( dirname( __FILE__ ) ) . 'partials/book-collect-admin-post-meta.php' );
+		$book_collect_post_meta  = new book_collect_Admin_post_meta( );
+		add_action( 'init'					, array($book_collect_post_meta, 'bocol_book_collection_post_types') );
+		add_action( 'init'					, array($book_collect_post_meta, 'bocol_books_register_meta') );
+		add_action( 'init'					, array($book_collect_post_meta, 'bocol_Genres_register_taxonomies') );
 
 		add_action( 'admin_menu'			, array($this, 'admin_menu') );
 		
@@ -129,7 +133,7 @@ class book_collect_Admin {
 			esc_html__( 'Bocol Logger', 'book-collect' ),
 			'update_core',
 			'book_collect_log_list',
-			array( $this, 'book_collect_menu_options' ),
+			array( $this, 'generate_menu_page' ),
 			'dashicons-editor-help',
 			100
 		);
@@ -150,8 +154,8 @@ class book_collect_Admin {
 		// $search        = isset( $_POST['search'] ) ? $_POST['search'] : '';
 		// $hide_form     = isset( $_COOKIE['wp_logger_hide_form'] ) ? 'hide-form' : '';
 
-		//$logger_table  = new Book_Collect_List_Table( $this->get_entries() );
-		//$logger_table->prepare_items();
+		$logger_table  = new Book_Collect_List_Table( $this->get_entries() );
+		$logger_table->prepare_items();
 		require_once( trailingslashit( dirname( __FILE__ ) ) . 'partials/book-collect-admin-display.php' );
 		//$this->admin_menu_setting_check();
 	}
@@ -232,155 +236,107 @@ class book_collect_Admin {
 
 	
 
-	function bocol_book_collection_post_types() {
-		register_post_type( 'book', [
-			'public'                => true,
-			'publicly_queryable'    => true,
-			'show_in_rest'          => true,
-			'show_in_nav_menus'     => true,
-			'show_in_admin_bar'     => true,
-			'exclude_from_search'   => false,
-			'show_ui'               => true,
-			'show_in_menu'          => true,
-			'menu_icon'             => 'dashicons-book',
-			'hierarchical'          => false,
-			'has_archive'           => 'books',
-			'qeury_var'             => 'book',
-			'map_meta_cap'          => true,
-			//'capabilities_type'     => 'book',
-			'taxonomies'            => [
-				'post_tag'
-			],
-
-			// The rewrite handles the URL structure.
-			'rewrite' => [
-				'slug'          => 'books',
-				'with_front'    => false,
-				'pages'         => true,
-				'feeds'         => true,
-				'ep_mask'       => EP_PERMALINK,
-			],
-
-			// Features the Book type supports.
-			'supports' => [
-				'title',
-				'editor',
-				'excerpt',
-				'thumbnail'
-			],
-
-			// Text labels
-			'labels' => [
-				'name'                     => 'Books',
-				'singular_name'            => 'Book',
-				'add_new'                  => 'Add New',
-				'add_new_item'             => 'Add New Book',
-				'edit_item'                => 'Edit Book',
-				'new_item'                 => 'New Book',
-				'view_item'                => 'View Book',
-				'view_items'               => 'View Books',
-				'search_items'             => 'Search Books',
-				'not_found'                => 'No books found.',
-				'not_found_in_trash'       => 'No books found in Trash.',
-				'all_items'                => 'All Books',
-				'archives'                 => 'Book Archives',
-				'attributes'               => 'Book Attributes',
-				'insert_into_item'         => 'Insert into book',
-				'uploaded_to_this_item'    => 'Uploaded to this book',
-				'featured_image'           => 'Book Image',
-				'set_featured_image'       => 'Set book image',
-				'remove_featured_image'    => 'Remove book image',
-				'use_featured_image'       => 'Use as book image',
-				'filter_items_list'        => 'Filter books list',
-				'items_list_navigation'    => 'Books list navigation',
-				'items_list'               => 'Books list',
-				'item_published'           => 'Book published.',
-				'item_published_privately' => 'Book published privately.',
-				'item_reverted_to_draft'   => 'Book reverted to draft.',
-				'item_scheduled'           => 'Book scheduled.',
-				'item_updated'             => 'Book updated.'
-			], 
-	
-	/*        
-			'capabilities' => [
-				'edit_post'                 => 'edit_book',
-				'read_post'                 => 'read_book',
-				'delete_post'               => 'delete_book',
-				'create_post'               => 'create_books',
-				'edit_posts'                => 'edit_books',
-				'edit_others_posts'         => 'edit_others_books',
-				'edit_private_posts'        => 'edit_private_books',
-				'edit_published_posts'      => 'edit_published_books',
-				'publish_posts'             => 'publish_books',
-				'read_private_posts'        => 'read_private_books',
-				'read'                      => 'read',
-				'delete_posts'              => 'delete_books',
-				'delete_others_posts'       => 'delete_others_books',
-				'delete_private_posts'      => 'delete_private_books',
-				'delete_published_posts'    => 'delete_published_books',
-			],
-	*/      
-		] );
-	}
-
 	
 
-    function bocol_books_register_meta() {
-        register_post_meta( 'book', 'book_author', [
-            'single'               => true,
-            'show_in_rest'         => true,
-            'sanitize_callback'    => function( $value ) {
-                      return wp_strip_all_tags( $value );
-            }
-        ]);
-    }
+	/* get entries used for list table */
+	private function get_entries( $limit = 20 ) {
+		global $wpdb;
+		$post_where    = "post_type = '" . esc_sql( self::CPT ) . "' AND post_parent != 0";
+		$comment_where = "comment_approved = '" . esc_sql( self::CPT ) . "'";
+		//$post_where    = "post_type = ' ' AND post_parent != 0";
+		//$comment_where = "comment_approved = ' ' ";
 
+		if ( ! empty( $_POST['session-select'] ) ) {
+			$comment_where .= $wpdb->prepare( " AND comment_post_ID = %d AND comment_parent = 1", intval( $_POST['session-select'] ) );
+		} else {
+			$comment_where .= ' AND comment_parent = 0';
+		}
 
-	function bocol_Genres_register_taxonomies() {
-		register_taxonomy( 'genre', 'book', [
+		$args = array();
 
-			// Taxonomy auguments
-			'public'                => true,
-			'show_in_rest'          => true,
-			'show_ui'               => true,
-			'show_in_nav_menus'     => true,
-			'show_tagcloud'         => true,
-			'show_in_admin_column'  => true,
-			'hierarchical'          => true,
-			'qeury_var'             => 'genre',
+		// ordering
+		if ( isset( $_GET['orderby'] ) ) {
+			if ( 'log_plugin' === $_GET['orderby'] ) {
+				$args['orderby'] = 'log_plugin';
+			} elseif ( 'log_date' === $_GET['orderby'] ) {
+				$args['orderby'] = 'the_date';
+			} elseif ( 'log_severity' === $_GET['orderby'] ) {
+				$args['orderby'] = 'severity';
+			}
+		} else {
+			$args['orderby'] = 'the_date';
+		}
+		$args['order'] = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'desc';
 
-			// The rewrite handles the URL structure.
-			'rewrite' => [
-				'slug'          => 'genre',
-				'with_front'    => false,
-				'hierarchical'  => false,
-				'ep_mask'       => EP_NONE
-			],
+		// search
+		if ( ! empty( $_POST['search'] ) ) {
+			$search = '%' . $wpdb->esc_like( wp_unslash( $_POST['search'] ) ) . '%';
+			$post_where .= $wpdb->prepare( " AND ( {$wpdb->posts}.post_title LIKE %s )", $search );
+			$comment_where .= $wpdb->prepare( " AND ( {$wpdb->comments}.comment_content LIKE %s OR {$wpdb->comments}.comment_author LIKE %s )", $search, $search );
+		}
 
-			// Text labels
-			'labels' => [
-				'name'                     => 'Genres',
-				'singular_name'            => 'Genre',
-				'name_admin_bar'           => 'Genres',
-				'search_items'             => 'Search Genres',
-				'popular_items'            => 'Popular Genres',
-				'all_items'                => 'All Genres',
-				'add_new'                  => 'Add New',
-				'edit_item'                => 'Edit Genre',
-				'view_item'                => 'View Genre',
-				'update_item'              => 'Update Genre',
-				'add_new_item'             => 'Add New Genre',
-				'new_item_name'            => 'New Genre Name',
-				'not_found'                => 'No genres found.',
-				'no_terms'                 => 'No genres',
-				'items_list_navigation'    => 'Genres list navigation',
-				'items_list'               => 'Genres list',
-				// Hierarchical only
-				'select_name'              => 'Select Genre',
-				'parent_name'              => 'Parent Genre',
-				'parent_name_colon'        => 'Parent Genre:',
-			]
-		] );
+		$args['join'] = '';
+
+		if ( ! empty( $_POST['plugin-select'] ) ) {
+			$term = get_term_by( 'slug', $this->prefix_slug( sanitize_text_field( wp_unslash( $_POST['plugin-select'] ) ) ), self::TAXONOMY );
+			if ( $term ) {
+				$post_where .= $wpdb->prepare( " AND (wp_term_relationships.term_taxonomy_id IN (%d))", intval( $term->term_id ) );
+				$comment_where .= $wpdb->prepare( " AND comment_author = %s", sanitize_text_field( wp_unslash( $_POST['plugin-select'] ) ) );
+				$args['join'] = 'INNER JOIN ' . $wpdb->term_relationships . ' ON ' . $wpdb->posts . '.ID = ' . $wpdb->term_relationships . '.object_id ';
+			}
+		}
+
+		if ( ! empty( $_POST['log-select'] ) && empty( $_POST['session-select'] ) ) {
+			$comment_where .= $wpdb->prepare( " AND comment_post_ID = %d", intval( $_POST['log-select'] ) );
+			$post_where .= $wpdb->prepare( " AND post_parent = %d", intval( $_POST['log-select'] ) );
+		}
+
+		if ( isset( $_GET['paged'] ) && intval( $_GET['paged'] ) > 1 ) {
+			$args['limit'] = $wpdb->prepare( " LIMIT 20 OFFSET %d", ( intval( $_GET['paged'] ) - 1 ) * 20 );
+		} else {
+			$args['limit'] = " LIMIT $limit";
+		}
+
+		$session_select = "SELECT
+				ID AS the_ID,
+				menu_order AS severity,
+				post_title AS message,
+				post_date AS the_date,
+				post_excerpt AS log_plugin,
+				1 AS session
+			FROM
+				{$wpdb->posts}
+			{$args['join']}
+			WHERE
+				{$post_where}
+			UNION ";
+
+		$sql = "SELECT
+				comment_ID AS the_ID,
+				user_ID AS severity,
+				comment_content AS message,
+				comment_date AS the_date,
+				comment_author AS log_plugin,
+				0 AS session
+			FROM
+				{$wpdb->comments}
+			WHERE
+				{$comment_where}
+			ORDER BY
+			{$args['orderby']}
+			{$args['order']}, the_ID ASC";
+
+		if ( empty( $_POST['session-select'] ) ) {
+			$sql = $session_select . $sql;
+		}
+
+		$rows   = $wpdb->get_results( "{$sql} {$args['limit']}" );
+		$count  = $wpdb->get_results( $sql ); // use get_results to count (legacy approach)
+		$countn = is_array( $count ) ? count( $count ) : 0;
+
+		return array(
+			'entries' => $rows,
+			'count'   => $countn,
+		);
 	}
-
 }

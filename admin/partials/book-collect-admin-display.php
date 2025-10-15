@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap book-collect-wrap">
-	<h1><?php esc_html_e( 'Plugin Logs', 'book-collect' ); ?></h1>
+	<h1><?php esc_html_e( 'Book Collect', 'book-collect' ); ?></h1>
 
 	<!-- <form method="post" id="logger-form" action=""> -->
 	<form id="book-collect-form" method="post" action="">
@@ -29,16 +29,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<input type="hidden" name="book_collect_submit_hidden" value="Y">
 		<div class="alignleft actions">
-			<label for="add log entry">
+			<label for="add book entry">
 				<?php 
 					//esc_html_e( 'Add log entry:', 'book-collect' ); 
 				?>
 			</label>
-			<?php submit_button( __( 'Add Log', 'book-collect' ), 'primary', 'add_log_button', false ); ?>
+			<?php submit_button( __( 'Add Book', 'book-collect' ), 'primary', 'add_book_button', false ); ?>
 
-			<input type="text" id="catcher_log_sample_text" 
-				   name="catcher_log_sample_text" 
-				   value="<?php echo $catcher_log_sample_text?>"></input>
+			<input type="text" id="book_collect_sample_text" 
+				   name="book_collect_sample_text" 
+				   value="<?php echo $book_collect_sample_text?>"></input>
 		</div>
 
 		<div class="tablenav top">
@@ -51,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</label>
 				<select name="plugin-select" id="plugin-select">
 					<option value="">
-						<?php esc_html_e( 'All Plugins', 'book-collect' ); ?>
+						<?php esc_html_e( 'All Genres', 'book-collect' ); ?>
 					</option>
 					<?php
 					// foreach ( $this->get_plugins() as $plugin ) {
@@ -98,7 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<!-- </option>
 				</select> -->
 
-				<input type="search" name="search" value="<?php echo isset( $_POST['search'] ) ? esc_attr( $_POST['search'] ) : ''; ?>" placeholder="<?php esc_attr_e( 'Search logs…', 'book-collect' ); ?>" />
+				<input type="search" name="search" value="<?php echo isset( $_POST['search'] ) ? esc_attr( $_POST['search'] ) : ''; ?>" placeholder="<?php esc_attr_e( 'Search books…', 'book-collect' ); ?>" />
 
 				<?php submit_button( __( 'Filter', 'book-collect' ), '', 'filter_action', false ); ?>
 			</div>
@@ -109,12 +109,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="alignleft actions">
 				<label for="plugin-select">
-					<?php esc_html_e( 'Log Clear for Plugin:', 'book-collect' ); ?>
+					<?php esc_html_e( 'Clear Book for Genres:', 'book-collect' ); ?>
 				</label>
 				<br class="clear" />
 				<br class="clear" />
-				<select name="log_clear_plugin_select" id="log_clear_plugin_select">
-					<option value=""><?php esc_html_e( 'All Plugins', 'book-collect' ); ?></option>
+				<select name="book_collect_plugin_select" id="book_collect_plugin_select">
+					<option value=""><?php esc_html_e( 'All Genres', 'book-collect' ); ?></option>
 					<?php
 					// foreach ( $this->get_plugins() as $plugin ) {
 					// 	printf(
@@ -137,6 +137,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 	</form>
 	
+	<br class="clear" />
+	<br class="clear" />
+	<br class="clear" />
 	<div id="email-response"></div>
 	<div class="alignleft actions">
 		<label for="email-results">Email</label>

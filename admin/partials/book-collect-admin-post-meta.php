@@ -1,0 +1,155 @@
+<?php
+
+class book_collect_Admin_post_meta {
+
+    public function bocol_book_collection_post_types() {
+		register_post_type( 'book', [
+			'public'                => true,
+			'publicly_queryable'    => true,
+			'show_in_rest'          => true,
+			'show_in_nav_menus'     => true,
+			'show_in_admin_bar'     => true,
+			'exclude_from_search'   => false,
+			'show_ui'               => true,
+			'show_in_menu'          => true,
+			'menu_icon'             => 'dashicons-book',
+			'hierarchical'          => false,
+			'has_archive'           => 'books',
+			'qeury_var'             => 'book',
+			'map_meta_cap'          => true,
+			//'capabilities_type'     => 'book',
+			'taxonomies'            => [
+				'post_tag'
+			],
+
+			// The rewrite handles the URL structure.
+			'rewrite' => [
+				'slug'          => 'books',
+				'with_front'    => false,
+				'pages'         => true,
+				'feeds'         => true,
+				'ep_mask'       => EP_PERMALINK,
+			],
+
+			// Features the Book type supports.
+			'supports' => [
+				'title',
+				'editor',
+				'excerpt',
+				'thumbnail'
+			],
+
+			// Text labels
+			'labels' => [
+				'name'                     => 'Books',
+				'singular_name'            => 'Book',
+				'add_new'                  => 'Add New',
+				'add_new_item'             => 'Add New Book',
+				'edit_item'                => 'Edit Book',
+				'new_item'                 => 'New Book',
+				'view_item'                => 'View Book',
+				'view_items'               => 'View Books',
+				'search_items'             => 'Search Books',
+				'not_found'                => 'No books found.',
+				'not_found_in_trash'       => 'No books found in Trash.',
+				'all_items'                => 'All Books',
+				'archives'                 => 'Book Archives',
+				'attributes'               => 'Book Attributes',
+				'insert_into_item'         => 'Insert into book',
+				'uploaded_to_this_item'    => 'Uploaded to this book',
+				'featured_image'           => 'Book Image',
+				'set_featured_image'       => 'Set book image',
+				'remove_featured_image'    => 'Remove book image',
+				'use_featured_image'       => 'Use as book image',
+				'filter_items_list'        => 'Filter books list',
+				'items_list_navigation'    => 'Books list navigation',
+				'items_list'               => 'Books list',
+				'item_published'           => 'Book published.',
+				'item_published_privately' => 'Book published privately.',
+				'item_reverted_to_draft'   => 'Book reverted to draft.',
+				'item_scheduled'           => 'Book scheduled.',
+				'item_updated'             => 'Book updated.'
+			], 
+	
+	/*        
+			'capabilities' => [
+				'edit_post'                 => 'edit_book',
+				'read_post'                 => 'read_book',
+				'delete_post'               => 'delete_book',
+				'create_post'               => 'create_books',
+				'edit_posts'                => 'edit_books',
+				'edit_others_posts'         => 'edit_others_books',
+				'edit_private_posts'        => 'edit_private_books',
+				'edit_published_posts'      => 'edit_published_books',
+				'publish_posts'             => 'publish_books',
+				'read_private_posts'        => 'read_private_books',
+				'read'                      => 'read',
+				'delete_posts'              => 'delete_books',
+				'delete_others_posts'       => 'delete_others_books',
+				'delete_private_posts'      => 'delete_private_books',
+				'delete_published_posts'    => 'delete_published_books',
+			],
+	*/      
+		] );
+	}
+
+	
+
+    public function bocol_books_register_meta() {
+        register_post_meta( 'book', 'book_author', [
+            'single'               => true,
+            'show_in_rest'         => true,
+            'sanitize_callback'    => function( $value ) {
+                      return wp_strip_all_tags( $value );
+            }
+        ]);
+    }
+
+
+	public function bocol_Genres_register_taxonomies() {
+		register_taxonomy( 'genre', 'book', [
+
+			// Taxonomy auguments
+			'public'                => true,
+			'show_in_rest'          => true,
+			'show_ui'               => true,
+			'show_in_nav_menus'     => true,
+			'show_tagcloud'         => true,
+			'show_in_admin_column'  => true,
+			'hierarchical'          => true,
+			'qeury_var'             => 'genre',
+
+			// The rewrite handles the URL structure.
+			'rewrite' => [
+				'slug'          => 'genre',
+				'with_front'    => false,
+				'hierarchical'  => false,
+				'ep_mask'       => EP_NONE
+			],
+
+			// Text labels
+			'labels' => [
+				'name'                     => 'Genres',
+				'singular_name'            => 'Genre',
+				'name_admin_bar'           => 'Genres',
+				'search_items'             => 'Search Genres',
+				'popular_items'            => 'Popular Genres',
+				'all_items'                => 'All Genres',
+				'add_new'                  => 'Add New',
+				'edit_item'                => 'Edit Genre',
+				'view_item'                => 'View Genre',
+				'update_item'              => 'Update Genre',
+				'add_new_item'             => 'Add New Genre',
+				'new_item_name'            => 'New Genre Name',
+				'not_found'                => 'No genres found.',
+				'no_terms'                 => 'No genres',
+				'items_list_navigation'    => 'Genres list navigation',
+				'items_list'               => 'Genres list',
+				// Hierarchical only
+				'select_name'              => 'Select Genre',
+				'parent_name'              => 'Parent Genre',
+				'parent_name_colon'        => 'Parent Genre:',
+			]
+		] );
+	}
+}
