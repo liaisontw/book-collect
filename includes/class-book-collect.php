@@ -169,7 +169,6 @@ class book_collect {
 
 		$plugin_admin = new book_collect_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		//$this->loader->add_action( 'init'              	  , $plugin_admin, 'init_book_collect' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 

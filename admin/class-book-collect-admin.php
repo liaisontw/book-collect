@@ -144,6 +144,69 @@ class book_collect_Admin {
 
 	}
 
+	/*
+	public function admin_menu_setting_check() {
+		if ( current_user_can('manage_options') ) {
+            if (   isset($_POST[ 'log_catcher_submit_hidden' ]) 
+                && $_POST[ 'log_catcher_submit_hidden' ] == 'Y' ) 
+			{ 
+				
+				// register_deactivation_hook( __FILE__, 'wp_logger_purge_logs' );
+				// function wp_logger_purge_logs() {
+				 	// Delete all log entries for the `wp-logger-test` plugin.
+					//do_action( 'wp_logger_purge', 'minify-stuff' );
+				//
+				if ( isset( $_POST[ 'log_clear_plugin_select' ] ) ) {
+					$log_clear_plugin_select = filter_var ( 
+						wp_unslash( $_POST[ 'log_clear_plugin_select' ] ), 
+						FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+				} 
+				
+
+				if ( '' != $_POST[ 'log_clear_plugin_select' ] ) {
+					//print_r($log_clear_plugin_select);
+					do_action( 'catcher_log_clear', $log_clear_plugin_select );
+				}
+				
+				if ( isset( $_POST[ 'catcher_log_sample_text' ] ) ) 	{
+					$catcher_log_sample_text = filter_var ( 
+						wp_unslash( $_POST[ 'catcher_log_sample_text' ] ), 
+						FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+				} 
+				// else {
+				// 	$catcher_log_sample_text = '1';
+				// }
+
+				
+
+				if ( '' != $_POST[ 'catcher_log_sample_text' ] ) 	
+				{	
+				
+					if ( '?' == $catcher_log_sample_text ) {
+						// Explicitly creating a new session.
+						// Note that severity is optional and defaults to 0.
+						do_action( 'catcher_log_session_begin', 'catcher-log', 'message', 'session test !', 0 );
+							do_action( 'catcher_log_add', 'catcher-log', 'message', 'session test !!', 2 );
+							do_action( 'catcher_log_add', 'catcher-log', 'message', 'session test !!!', 3 );
+						// Implicitly ends current session by creating a new session.
+						do_action( 'catcher_log_session_begin', 'catcher-log', 'message', 'session test !', 0 );
+							do_action( 'catcher_log_add', 'catcher-log', 'message', 'session test !!!!', 4 );
+							do_action( 'catcher_log_add', 'catcher-log', 'message', 'session test !!!!!', 5 );
+						// Explicitly end the current session.
+						do_action( 'catcher_log_session_end' );
+					} else {
+						do_action( 'catcher_log_add', 
+							'plugin-sample-' . $catcher_log_sample_text, 
+							'message-' . $catcher_log_sample_text, 
+							'step ' . $catcher_log_sample_text,
+							1 );				
+					}
+				}
+			}
+		}
+	}
+	*/
+
 	public function generate_menu_page() {
 		$book_collect_sample_text = '';
 		require_once( trailingslashit( dirname( __FILE__ ) ) . '../includes/class-book-collect-list-table.php' );

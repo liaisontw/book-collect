@@ -1,0 +1,246 @@
+
+Book List & Library
+导出
+复制
+
+Books
+Authors
+Publishers
+Borrowers
+Time Tracking
+插件
+Default View
+过滤
+排序
+分组
+隐藏列
+
+看板
+拖动以调整冻结列的数量
+
+Title
+Language
+Author
+Year
+Category
+Genre/Topics
+Publisher
+ISBN
+Pages
+Status
+Finished on
+Rating
+Place
+Lent to
+
+Candide ou l’Optimisme
+French
+Voltaire
+1759
+fictional
+philosophy
+satire
+travelling
+Reclam Verlag
+978-3150092217
+184
+read
+28/05/2015
+living room
+
+The Girl Who Loved Tom Gordon
+English
+Stephen King
+1999
+fictional
+horror
+youth
+Hodder & Stoughton
+978-1444707472
+256
+read
+24/01/2021
+Patricia Brighton
+
+Schuld
+German
+Ferdinand von Schirach
+2010
+semi-fictional
+crime/thriller
+Piper Verlag
+978-3492054225
+208
+in progress
+bed room
+
+Jamie's Ministry of Food: Anyone Can Learn to Cook in 24 Hours
+English
+Jamie Oliver
+2008
+non-fictional
+cooking
+Michael Joseph
+978-0718148621
+360
+unread
+kitchen
+
+Anna Karenina
+Russian
+Leo Tolstoi
+1878
+fictional
+love
+society
+CreateSpace
+978-1463784423
+568
+unread
+Jewgenij Sacharow
+
+Maria Stuart
+German
+Friedrich von Schiller
+1800
+semi-fictional
+drama
+history
+Hamburger Lesehefte
+978-3872910110
+157
+read
+31/08/2023
+attic
+
+Le Petit Prince
+French
+Antoine de Saint-Exupéry
+1943
+fictional
+science fiction
+philosophy
+Éditions Gallimard
+978-2075155540
+136
+read
+12/05/2010
+bed room
+
+Caspar David Friedrich
+German
+Johannes Grave
+2022
+non-fictional
+biography
+art
+history
+Prestel Verlag
+978-3791389134
+288
+read
+03/03/2012
+living room
+
+Moon Palace
+English
+Paul Auster
+1989
+fictional
+love
+travelling
+society
+Faber & Faber
+978-0571142200
+298
+stopped
+John Meyer
+
+Madeira: Die schönsten Levada- und Bergwanderungen
+German
+Rolf Goetz
+2024
+non-fictional
+travelling
+Bergverlag Rother
+978-3763342747
+280
+read
+02/06/2023
+Frederick Rutten
+
+La casa de los espíritus
+Spanish
+Isabel Allende
+1982
+semi-fictional
+love
+society
+biography
+DeBolsillo
+978-8483462034
+453
+unread
+Marcy Murakami
+
+Faust: Der Tragödie 1. und 2. Teil
+German
+Johann W. von Goethe
+1808
+fictional
+drama
+fantasy
+society
+Reclam Verlag
+978-3150140482
+356
+read
+21/12/2011
+basement
+
+Dune
+English
+Frank Herbert
+1965
+fictional
+science fiction
+Ace Books
+978-0593099322
+688
+stopped
+René Beauvallon
+
+Das einzige Buch, das du über Finanzen lesen solltest
+German
+Thomas Kehl
+2022
+non-fictional
+finance
+advisory
+Ullstein Verlag
+978-3548065847
+288
+in progress
+office
+
+Harry Potter and the Philosopher's Stone
+English
+Joanne K. Rowling
+1997
+fictional
+fantasy
+youth
+Bloomsbury
+978-1408855652
+352
+read
+04/02/2009
+attic
+15 行被选择
+总和
+4872
+总和
+38
+请先登录再拷贝这个子表。
+
+×
