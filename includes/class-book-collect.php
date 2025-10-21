@@ -80,10 +80,12 @@ class book_collect {
 		$this->define_public_hooks();
 
 		// Load custom post type functions
-		//require_once plugin_dir_path( __FILE__ ) . 'post-types.php';
-		//require_once plugin_dir_path( __FILE__ ) . 'post-meta.php';
-		//require_once plugin_dir_path( __FILE__ ) . 'meta-boxes.php';
-		//require_once plugin_dir_path( __FILE__ ) . 'taxonomies.php';
+		//require_once( trailingslashit( dirname( __FILE__ ) ) . 'includes/class-book-collect-post-meta.php' );
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-book-collect-post-meta.php';
+		$book_collect_post_meta  = new book_collect_Admin_post_meta( );
+		add_action( 'init'					, array($book_collect_post_meta, 'bocol_book_collection_post_types') );
+		add_action( 'init'					, array($book_collect_post_meta, 'bocol_books_register_meta') );
+		add_action( 'init'					, array($book_collect_post_meta, 'bocol_Genres_register_taxonomies') );
 
 
 	}
@@ -231,4 +233,171 @@ class book_collect {
 		return $this->version;
 	}
 
+	/*
+	public function add_log_entry( $plugin_name, $log, $message, $severity = 1 ) {
+		$plugin_name = sanitize_text_field( (string) $plugin_name );
+		$log         = sanitize_text_field( (string) $log );
+		$message     = (string) $message;
+		$severity    = intval( $severity );
+
+		if ( self::$session_post ) {
+			$post_id = self::$session_post;
+		} else {
+			$post_id = $this->check_existing_log( $plugin_name, $log );
+			if ( false == $post_id ) {
+				$post_id = $this->create_post_with_terms( $plugin_name, $log );
+				if ( false == $post_id ) {
+					return false;
+				}
+			}
+		}
+
+		$comment_data = array(
+			'comment_post_ID'      => $post_id,
+			'comment_content'      => wp_kses_post( $message ),
+			'comment_author'       => $plugin_name,
+			'comment_approved'     => self::CPT,
+			'comment_author_IP'    => '',
+			'comment_author_url'   => '',
+			'comment_author_email' => '',
+			'user_id'              => $severity,
+		);
+
+		if ( self::$session_post ) {
+			$comment_data['comment_parent'] = 1;
+		}
+
+		$comment_id = wp_insert_comment( wp_filter_comment( $comment_data ) );
+
+		if ( ! self::$session_post ) {
+			$this->limit_plugin_logs( $plugin_name, $log, $post_id );
+		}
+
+		return (bool) $comment_id;
+	}
+
+	//limit plugin logs with filter wp_logger_limit_{plugin_name} 
+	private function limit_plugin_logs( $plugin_name, $log_name, $log_id ) {
+		global $wpdb;
+
+		$limit = apply_filters( 'wp_logger_limit_' . $plugin_name, 20, $log_name );
+
+		$comments = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT * FROM $wpdb->comments WHERE comment_approved = %s AND comment_author = %s AND comment_post_ID = %d ORDER BY comment_date ASC",
+				self::CPT,
+				$plugin_name,
+				$log_id
+			)
+		);
+
+		$count = $wpdb->num_rows;
+
+		if ( $count > $limit ) {
+			$diff = $count - $limit;
+			for ( $i = 0; $i < $diff; $i++ ) {
+				wp_delete_comment( $comments[ $i ]->comment_ID, true );
+			}
+		}
+	}
+	
+	public function clear_logs($plugin_name ) {
+		$logs = $this->plugin_admin->get_logs( $plugin_name, 'purge' );
+		if ( $logs->have_posts() ) {
+			while ( $logs->have_posts() ) {
+				$logs->the_post();
+				wp_delete_post( get_the_ID(), true );
+			}
+			wp_reset_postdata();
+		}
+	}
+
+	// ensure a taxonomy term exists for plugin and return slug 
+	private function do_plugin_term( $plugin_name ) {
+		$prefixed_term = $this->plugin_admin->prefix_slug( $plugin_name );
+
+		if ( ! term_exists( $prefixed_term, self::TAXONOMY ) ) {
+			$registered = wp_insert_term(
+				$plugin_name,
+				self::TAXONOMY,
+				array( 'slug' => $prefixed_term )
+			);
+			if ( is_wp_error( $registered ) ) {
+				return false;
+			}
+		}
+		return $prefixed_term;
+	}
+
+	// helper: check existing log post 
+	private function check_existing_log( $plugin_name, $log ) {
+		$prefixed_term = $this->do_plugin_term( $plugin_name );
+
+		$log_exists = new WP_Query(
+			array(
+				'post_type' => self::CPT,
+				'name'      => $this->plugin_admin->prefix_slug( $log, $plugin_name ),
+				'tax_query' => array(
+					array(
+						'taxonomy' => self::TAXONOMY,
+						'field'    => 'slug',
+						'terms'    => $prefixed_term
+					)
+				)
+			)
+		);
+
+		if ( $log_exists->have_posts() ) {
+			$log_exists->the_post();
+			$id = get_the_ID();
+			wp_reset_postdata();
+			return $id;
+		}
+
+		return false;
+	}
+
+	// create CPT + assign plugin taxonomy term 
+	private function create_post_with_terms( $plugin_name, $log, $session_title = '', $severity = 0 ) {
+		$prefixed_term = $this->do_plugin_term( $plugin_name );
+
+		$args = array(
+			'post_title'     => sanitize_text_field( $log ),
+			'post_name'      => $this->plugin_admin->prefix_slug( $log, $plugin_name ),
+			'post_type'      => self::CPT,
+			'comment_status' => 'closed',
+			'ping_status'    => 'closed',
+			'post_status'    => 'publish',
+		);
+
+		if ( ! empty( $session_title ) ) {
+			$existing_log = $this->check_existing_log( $plugin_name, $log );
+			if ( false == $existing_log ) {
+				$existing_log = $this->create_post_with_terms( $plugin_name, $log );
+			}
+			$args['post_parent']  = $existing_log;
+			$args['post_title']   = sanitize_text_field( $session_title );
+			$args['post_excerpt'] = sanitize_text_field( $plugin_name );
+			$args['menu_order']   = intval( $severity );
+		}
+
+		$post_id = wp_insert_post( $args );
+
+		if ( 0 == $post_id ) {
+			return false;
+		}
+
+		$add_terms = wp_set_post_terms(
+			$post_id,
+			$prefixed_term,
+			self::TAXONOMY
+		);
+
+		if ( ! is_array( $add_terms ) ) {
+			return false;
+		}
+
+		return $post_id;		
+	}
+	*/
 }

@@ -53,11 +53,11 @@ class book_collect_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		require_once( trailingslashit( dirname( __FILE__ ) ) . 'partials/book-collect-admin-post-meta.php' );
-		$book_collect_post_meta  = new book_collect_Admin_post_meta( );
-		add_action( 'init'					, array($book_collect_post_meta, 'bocol_book_collection_post_types') );
-		add_action( 'init'					, array($book_collect_post_meta, 'bocol_books_register_meta') );
-		add_action( 'init'					, array($book_collect_post_meta, 'bocol_Genres_register_taxonomies') );
+		// require_once( trailingslashit( dirname( __FILE__ ) ) . 'partials/book-collect-admin-post-meta.php' );
+		// $book_collect_post_meta  = new book_collect_Admin_post_meta( );
+		// add_action( 'init'					, array($book_collect_post_meta, 'bocol_book_collection_post_types') );
+		// add_action( 'init'					, array($book_collect_post_meta, 'bocol_books_register_meta') );
+		// add_action( 'init'					, array($book_collect_post_meta, 'bocol_Genres_register_taxonomies') );
 
 		add_action( 'admin_menu'			, array($this, 'admin_menu') );
 		
